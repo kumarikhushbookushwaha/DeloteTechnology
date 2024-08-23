@@ -1,0 +1,23 @@
+body {
+    background-color: #f0f8ff;
+  }
+  
+  .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-primary {
+    background-color: #3b5998;
+    border-color: #3b5998;
+  }
+  
+  .btn-danger {
+    background-color: #db4437;
+    border-color: #db4437;
+  }
+  
+  .fab {
+    margin-right: 8px;
+  }
+  
