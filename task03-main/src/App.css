@@ -1,0 +1,42 @@
+.App {
+  text-align: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px; /* Adjusted gap for better fit */
+  padding: 10px; /* Adjusted padding for better fit */
+}
+
+.graph-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+  width: 96%; /* Ensure it fits within grid cell */
+}
+
+h2 {
+  font-size: 1.5rem; /* Adjusted font size */
+}
+
+.time-buttons {
+  margin-bottom: 10px; /* Adjusted margin for spacing */
+}
+
+.time-buttons button {
+  margin: 0 5px; /* Adjusted margin for better fit */
+  padding: 5px 10px; /* Adjusted padding for better fit */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem; /* Adjusted font size for buttons */
+}
+
+.time-buttons button:hover {
+  background-color: #0056b3;
+}
