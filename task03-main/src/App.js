@@ -97,8 +97,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Sensor Data Graphs</h1>
-      <h6>Made by Ashmit</h6>
+      <h1>Sensor Data Graphical Representation</h1>
 
       <div className="grid-container">
         {['internet', 'motion', 'latency', 'battery'].map(graphType => (
