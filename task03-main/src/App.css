@@ -24,19 +24,14 @@ h2 {
 
 .time-buttons {
   margin-bottom: 10px; /* Adjusted margin for spacing */
+  margin: auto;
 }
 
-.time-buttons button {
-  margin: 0 5px; /* Adjusted margin for better fit */
-  padding: 5px 10px; /* Adjusted padding for better fit */
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem; /* Adjusted font size for buttons */
+.timeButton
+{
+    margin-left: 15px;
 }
 
-.time-buttons button:hover {
-  background-color: #0056b3;
+.graph-item {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
 }

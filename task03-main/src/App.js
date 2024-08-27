@@ -96,19 +96,42 @@ const App = () => {
   };
 
   return (
-    <div className="App">
+    <div className="App bg-info">
       <h1>Sensor Data Graphical Representation</h1>
 
-      <div className="grid-container">
+      <div className="grid-container shadow-lg">
         {['internet', 'motion', 'latency', 'battery'].map(graphType => (
-          <div key={graphType} className="graph-item">
+          <div key={graphType} className="graph-item bg-white shadow-lg">
             <h2>{graphType.charAt(0).toUpperCase() + graphType.slice(1)}  Graph</h2>
-            <div className="time-buttons">
-              <button onClick={() => handleTimeFrameChange(graphType, '3hours')}>Last 3 Hours</button>
-              <button onClick={() => handleTimeFrameChange(graphType, '24hours')}>Last 24 Hours</button>
-              <button onClick={() => handleTimeFrameChange(graphType, '7days')}>Last 7 Days</button>
-              <button onClick={() => handleTimeFrameChange(graphType, '30days')}>Last 30 Days</button>
-            </div>
+            <div className="time-buttons rounded-2">
+  <button
+    type="button"
+    onClick={() => handleTimeFrameChange(graphType, '3hours')}
+    className="btn btn-danger timeButton" // Added margin-right for spacing
+  >
+    Last 3 Hours
+  </button>
+  <button
+    onClick={() => handleTimeFrameChange(graphType, '24hours')}
+    className="btn btn-danger timeButton" // Added margin-right for spacing
+  >
+    Last 24 Hours
+  </button>
+  <button
+    onClick={() => handleTimeFrameChange(graphType, '7days')}
+    className="btn btn-danger timeButton" // Added margin-right for spacing
+  >
+    Last 7 Days
+  </button>
+  <button
+    onClick={() => handleTimeFrameChange(graphType, '30days')}
+    className="btn btn-danger timeButton" // No margin needed for the last button
+  >
+    Last 30 Days
+  </button>
+</div>
+
+
             <Line data={graphs[graphType]} />
           </div>
         ))}
