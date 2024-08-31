@@ -19,7 +19,6 @@ const LoginForm = () => {
       const data = await response.json();
       if (response.ok) {
         alert(data.message);
-       
       } else {
         alert(data.message);
       }
@@ -29,37 +28,56 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="form-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <a href="#">Forgot password?</a>
-        <button type="submit">Login</button>
-      </form>
-      <div className="social-login">
-        <button style={{ backgroundColor: '#3b5998' }}>Login with Facebook</button>
-        <button style={{ backgroundColor: '#db4437' }}>Login with Google</button>
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+      <div className="card p-4" style={{ width: '400px' }}>
+        <h3 className="text-center mb-4">Login</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group mb-3">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3 text-center">
+            <a href="#">Forgot password?</a>
+          </div>
+          <button type="submit" className="btn btn-primary w-100 mb-3">
+            Login
+          </button>
+          <p className="text-center">
+            Don’t have an account? <Link to="/signup">Sign Up</Link>
+          </p>
+          <div className="w-100 mb-4 text-center">
+            <hr className="d-inline-block w-40 hr-custom" />
+            <span className="mx-2">Or</span>
+            <hr className="d-inline-block w-40 hr-custom" />
+          </div>
+          <button className="btn btn-primary w-100 mb-3">
+            <i className="fab fa-facebook-f"></i> Login with Facebook
+          </button>
+          <button className="btn btn-danger w-100 mb-3">
+            <i className="fab fa-google"></i> Login with Google
+          </button>
+        </form>
       </div>
-      <p>
-        Don't have an account? <Link to="/signup">Sign Up</Link>
-      </p>
     </div>
   );
 };
