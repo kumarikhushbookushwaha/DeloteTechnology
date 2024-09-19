@@ -1,8 +1,8 @@
-// Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -24,22 +24,26 @@ const Login = () => {
   };
 
   return (
-    <div className='login'>
-      <h3>Login</h3>
-      <form onSubmit={submitForm}>
-        <div className="inputGroup">
-          <label htmlFor="username">Username</label>
-          <input type="text" onChange={inputHandler} id="username" name="username" autoComplete='off' placeholder='Username' />
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="password">Password</label>
-          <input type="password" onChange={inputHandler} id="password" name="password" autoComplete='off' placeholder='Password' />
-        </div>
-        <div className="inputGroup">
-          <button type="submit">LOGIN</button>
-        </div>
-      </form>
-    </div>
+    <Container className='d-flex justify-content-center align-items-center' style={{ minHeight: '100vh' }}>
+      <Row className='w-100'>
+        <Col md={6} lg={4} className='mx-auto'>
+          <div className='login p-4 border rounded bg-white'>
+            <h3 className='text-center mb-4'>Login</h3>
+            <Form onSubmit={submitForm}>
+              <Form.Group className='mb-3' controlId='username'>
+                <Form.Label>Username</Form.Label>
+                <Form.Control type='text' onChange={inputHandler} name='username' autoComplete='off' placeholder='Username' />
+              </Form.Group>
+              <Form.Group className='mb-3' controlId='password'>
+                <Form.Label>Password</Form.Label>
+                <Form.Control type='password' onChange={inputHandler} name='password' autoComplete='off' placeholder='Password' />
+              </Form.Group>
+              <Button variant='primary' type='submit' className='w-100'>LOGIN</Button>
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

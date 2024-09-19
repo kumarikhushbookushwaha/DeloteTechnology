@@ -1,8 +1,8 @@
-// EmployeeList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { Container, Table, Button } from 'react-bootstrap';
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -23,9 +23,9 @@ const EmployeeList = () => {
   };
 
   return (
-    <div className='employeeList'>
-      <h3>Employee List</h3>
-      <table>
+    <Container className='mt-5'>
+      <h3 className='text-center mb-4'>Employee List</h3>
+      <Table striped bordered hover responsive>
         <thead>
           <tr>
             <th>Name</th>
@@ -49,14 +49,14 @@ const EmployeeList = () => {
               <td>{employee.course.join(', ')}</td>
               <td><img src={employee.imgUpload} alt={employee.name} width="50" /></td>
               <td>
-                <Link to={`/update/${employee.id}`}>Edit</Link>
-                <button onClick={() => deleteEmployee(employee.id)}>Delete</button>
+                <Link to={`/update/${employee.id}`} className='btn btn-warning btn-sm me-2'>Edit</Link>
+                <Button variant='danger' size='sm' onClick={() => deleteEmployee(employee.id)}>Delete</Button>
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Container>
   );
 };
 
