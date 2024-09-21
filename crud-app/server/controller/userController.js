@@ -1,5 +1,5 @@
 import User from "../model/userModel.js";
-
+import bcrypt from 'bcryptjs';
 export const create = async(req, res)=>{
     try {
 
@@ -82,3 +82,24 @@ export const deleteUser = async(req, res) =>{
         res.status(500).json({error: error});
     }
 }
+
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Invalid credentials' });
+        }
+
+        res.status(200).json({ msg: 'Login successful', user: user });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

@@ -1,36 +1,37 @@
 import React from 'react';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
-const CustomNavbar = ({ username }) => {
+function NavigationBar({ user, setUser }) {
   const navigate = useNavigate();
 
-  const logout = () => {
-    // Clear any authentication tokens or user data here
-    toast.success('Logged out successfully', { position: 'top-right' });
-    navigate('/login');
+  const handleLogout = () => {
+    setUser(null);
+    navigate('/');
   };
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand as={Link} to="/employees">Employee Management</Navbar.Brand>
+        <Navbar.Brand>{user ? user.name : 'Employee App'}</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/employees">Employee List</Nav.Link>
+            <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
+            <Nav.Link as={Link} to="/add">Add Employee</Nav.Link>
+            <Nav.Link as={Link} to="/employeelist">Employee List</Nav.Link>
           </Nav>
           <Nav>
-            <Navbar.Text className="me-3">
-              Welcome, {username}
-            </Navbar.Text>
-            <Button variant="outline-light" onClick={logout}>Logout</Button>
+            {user ? (
+              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            ) : (
+              <Nav.Link as={Link} to="/">Login</Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
-};
+}
 
-export default CustomNavbar;
+export default NavigationBar;

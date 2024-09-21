@@ -1,43 +1,38 @@
 import './App.css';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Add from './components/adduser/Add';
-import Edit from './components/updateuser/Edit';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import Navbar from './components/Navbar';
+import NavigationBar from './components/Navbar';
 import EmployeeList from './components/EmployeeList';
 import { useState } from 'react';
 
 function App() {
-  const [username, setUsername] = useState("John Doe");
+  const [user, setUser] = useState(null);
 
   const route = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
+      element:  <Login setUser={setUser} />,
     },
     {
       path: "/add",
-      element: <Add />,
-    },
-    {
-      path: "/edit/:id",
-      element: <Edit />,
+      element: <Add user={user} setUser={setUser}/>,
     },
     {
       path: "/dashboard",
-      element: <Dashboard />,
+      element: <Dashboard user={user} setUser={setUser}/>,
     },
     {
       path: "/employeelist",
-      element: <EmployeeList />,
+      element: <EmployeeList user={user} setUser={setUser}/>,
     },
   ]);
 
   return (
     <RouterProvider router={route}>
       <div className="App">
-        <Navbar username={username} />
+        <NavigationBar />
       </div>
     </RouterProvider>
   );

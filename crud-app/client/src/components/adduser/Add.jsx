@@ -1,116 +1,146 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from "axios";
-import "./add.css";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import toast from 'react-hot-toast';
+import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import NavigationBar from '../Navbar';
 
-const Add = () => {
+const AddEmployee = ({ user, setUser }) => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        mobile: '',
+        designation: '',
+        gender: '',
+        course: []
+    });
+    const navigate = useNavigate();
 
-  const users = {
-    name: "",
-    email: "",
-    password: "",
-    mobile: "",
-    designation: "",
-    gender: "",
-    course: [],
-    imgUpload: null
-  }
+    useEffect(() => {
+        if (!user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
 
-  const [user, setUser] = useState(users);
-  const navigate = useNavigate();
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        if (type === 'checkbox') {
+            setFormData((prevData) => ({
+                ...prevData,
+                course: checked
+                    ? [...prevData.course, value]
+                    : prevData.course.filter((course) => course !== value)
+            }));
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+        }
+    };
 
-  const inputHandler = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8000/api/create', formData);
+            toast.success(response.data.msg, { position: 'top-right' });
+        } catch (error) {
+            toast.error('There was an error creating the user!', { position: 'top-right' });
+            console.error('There was an error creating the user!', error);
+        }
+    };
+    return (
+        <>
+            <NavigationBar user={user} setUser={setUser} />
+            <Container className="mt-5 p-4 rounded" style={{ backgroundColor: 'white' }}>
+                <h2 className="text-center">Add Employee</h2>
+                <Form onSubmit={handleSubmit}>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group className="mb-3" controlId="name">
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="email">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="mobile">
+                                <Form.Label>Mobile</Form.Label>
+                                <Form.Control type="text" name="mobile" value={formData.mobile} onChange={handleChange} required />
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group className="mb-3" controlId="designation">
+                                <Form.Label>Designation</Form.Label>
+                                <Form.Control type="text" name="designation" value={formData.designation} onChange={handleChange} required />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="gender">
+                                <Form.Label>Gender</Form.Label>
+                                <div>
+                                    <Form.Check
+                                        inline
+                                        label="Male"
+                                        type="radio"
+                                        name="gender"
+                                        value="Male"
+                                        checked={formData.gender === 'Male'}
+                                        onChange={handleChange}
+                                    />
+                                    <Form.Check
+                                        inline
+                                        label="Female"
+                                        type="radio"
+                                        name="gender"
+                                        value="Female"
+                                        checked={formData.gender === 'Female'}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="course">
+                                <Form.Label>Course</Form.Label>
+                                <div>
+                                    <Form.Check
+                                        inline
+                                        label="MCA"
+                                        type="checkbox"
+                                        name="course"
+                                        value="MCA"
+                                        checked={formData.course.includes('MCA')}
+                                        onChange={handleChange}
+                                    />
+                                    <Form.Check
+                                        inline
+                                        label="BCA"
+                                        type="checkbox"
+                                        name="course"
+                                        value="BCA"
+                                        checked={formData.course.includes('BCA')}
+                                        onChange={handleChange}
+                                    />
+                                    <Form.Check
+                                        inline
+                                        label="BSC"
+                                        type="checkbox"
+                                        name="course"
+                                        value="BSC"
+                                        checked={formData.course.includes('BSC')}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <div className="d-flex justify-content-end">
+                        <Button variant="primary" type="submit">
+                            Add Employee
+                        </Button>
+                    </div>
+                </Form>
+            </Container>
+        </>
+    );
+};
 
-  const checkboxHandler = (e) => {
-    const { name, checked, value } = e.target;
-    if (checked) {
-      setUser({ ...user, [name]: [...user[name], value] });
-    } else {
-      setUser({ ...user, [name]: user[name].filter(item => item !== value) });
-    }
-  }
-
-  const fileHandler = (e) => {
-    setUser({ ...user, imgUpload: e.target.files[0] });
-  }
-
-  const submitForm = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    for (const key in user) {
-      formData.append(key, user[key]);
-    }
-    await axios.post("http://localhost:8000/api/create", formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-      .then((response) => {
-        toast.success(response.data.msg, { position: "top-right" });
-        navigate("/");
-      })
-      .catch(error => console.log(error));
-  }
-
-  return (
-    <div className='addUser'>
-      <Link to={"/"}>Back</Link>
-      <h3>Add new user</h3>
-      <form className='addUserForm' onSubmit={submitForm}>
-        <div className="inputGroup">
-          <label htmlFor="name">Name</label>
-          <input type="text" onChange={inputHandler} id="name" name="name" autoComplete='off' placeholder='Name' />
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="email">Email</label>
-          <input type="email" onChange={inputHandler} id="email" name="email" autoComplete='off' placeholder='Email' />
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="password">Password</label>
-          <input type="password" onChange={inputHandler} id="password" name="password" autoComplete='off' placeholder='password' />
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="mobile">Mobile No</label>
-          <input type="text" onChange={inputHandler} id="mobile" name="mobile" autoComplete='off' placeholder='Mobile No' />
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="designation">Designation</label>
-          <input type="text" onChange={inputHandler} id="designation" name="designation" autoComplete='off' placeholder='Designation' />
-        </div>
-        <div className="inputGroup">
-          <label>Gender</label>
-          <div>
-            <input type="radio" onChange={inputHandler} id="male" name="gender" value="Male" />
-            <label htmlFor="male">Male</label>
-            <input type="radio" onChange={inputHandler} id="female" name="gender" value="Female" />
-            <label htmlFor="female">Female</label>
-          </div>
-        </div>
-        <div className="inputGroup">
-          <label>Course</label>
-          <div>
-            <input type="checkbox" onChange={checkboxHandler} id="mca" name="course" value="MCA" />
-            <label htmlFor="mca">MCA</label>
-            <input type="checkbox" onChange={checkboxHandler} id="bca" name="course" value="BCA" />
-            <label htmlFor="bca">BCA</label>
-            <input type="checkbox" onChange={checkboxHandler} id="bsc" name="course" value="BSC" />
-            <label htmlFor="bsc">BSC</label>
-          </div>
-        </div>
-        <div className="inputGroup">
-          <label htmlFor="imgUpload">Img Upload</label>
-          <input type="file" onChange={fileHandler} id="imgUpload" name="imgUpload" />
-        </div>
-        <div className="inputGroup">
-          <button type="submit">ADD USER</button>
-        </div>
-      </form>
-    </div>
-  )
-}
-
-export default Add;
+export default AddEmployee;
