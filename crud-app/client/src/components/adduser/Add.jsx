@@ -9,6 +9,7 @@ const AddEmployee = ({ user, setUser }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        password:'',
         mobile: '',
         designation: '',
         gender: '',
@@ -42,11 +43,12 @@ const AddEmployee = ({ user, setUser }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            console.log('Submitting form data:', formData); // Log form data
             const response = await axios.post('http://localhost:8000/api/create', formData);
             toast.success(response.data.msg, { position: 'top-right' });
         } catch (error) {
             toast.error('There was an error creating the user!', { position: 'top-right' });
-            console.error('There was an error creating the user!', error);
+            console.error('There was an error creating the user!', error.response ? error.response.data : error.message);
         }
     };
     return (
@@ -67,13 +69,17 @@ const AddEmployee = ({ user, setUser }) => {
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="mobile">
                                 <Form.Label>Mobile</Form.Label>
-                                <Form.Control type="text" name="mobile" value={formData.mobile} onChange={handleChange} required />
+                                <Form.Control type="text" name="mobile" value={formData.mobile} onChange={handleChange}/>
                             </Form.Group>
                         </Col>
                         <Col md={6}>
                             <Form.Group className="mb-3" controlId="designation">
                                 <Form.Label>Designation</Form.Label>
-                                <Form.Control type="text" name="designation" value={formData.designation} onChange={handleChange} required />
+                                <Form.Control type="text" name="designation" value={formData.designation} onChange={handleChange} />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="password">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control type="password" name="password" value={formData.password} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="gender">
                                 <Form.Label>Gender</Form.Label>

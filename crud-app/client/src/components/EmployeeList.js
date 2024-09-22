@@ -58,9 +58,22 @@ const EmployeeList = ({ user, setUser }) => {
   }
 
   const inputHandler = (e) => {
-    const { name, value } = e.target;
-    setCurrentEmployee({ ...currentEmployee, [name]: value });
-  };
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setCurrentEmployee((prevData) => ({
+            ...prevData,
+            [name]: checked
+                ? [...prevData[name], value]
+                : prevData[name].filter((course) => course !== value)
+        }));
+    } else {
+      setCurrentEmployee({
+            ...currentEmployee,
+            [name]: value
+        });
+    }
+};
+
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -99,7 +112,7 @@ const EmployeeList = ({ user, setUser }) => {
                 <td>{employee.mobile}</td>
                 <td>{employee.designation}</td>
                 <td>{employee.gender}</td>
-                <td>{employee.course}</td>
+                <td>{employee.course.join(', ')}</td>
                 <td>
                   <Button variant='warning' size='sm' className='me-2' onClick={() => handleShowModal(employee)}>Edit</Button>
                   <Button variant='danger' size='sm' onClick={() => deleteEmployee(employee._id)}>Delete</Button>

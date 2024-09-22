@@ -34,9 +34,22 @@ const Dashboard = ({ user, setUser }) => {
   }, [user, navigate]);
 
   const inputHandler = (e) => {
-    const { name, value } = e.target;
-    setEmployee({ ...employee, [name]: value });
-  };
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+        setEmployee((prevData) => ({
+            ...prevData,
+            [name]: checked
+                ? [...prevData[name], value]
+                : prevData[name].filter((course) => course !== value)
+        }));
+    } else {
+        setEmployee({
+            ...employee,
+            [name]: value
+        });
+    }
+};
+
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -60,54 +73,103 @@ const Dashboard = ({ user, setUser }) => {
             </div>
             <p className='card-text text-left text-bold'>This is your dashboard.</p>
             {isEditing ? (
-              <Form onSubmit={submitForm}>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className='mb-3' controlId='name'>
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control type='text' onChange={inputHandler} name='name' value={employee.name || ''} autoComplete='off' placeholder='Name' />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className='mb-3' controlId='email'>
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control type='email' onChange={inputHandler} name='email' value={employee.email || ''} autoComplete='off' placeholder='Email' />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className='mb-3' controlId='mobile'>
-                      <Form.Label>Mobile</Form.Label>
-                      <Form.Control type='text' onChange={inputHandler} name='mobile' value={employee.mobile || ''} autoComplete='off' placeholder='Mobile' />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className='mb-3' controlId='designation'>
-                      <Form.Label>Designation</Form.Label>
-                      <Form.Control type='text' onChange={inputHandler} name='designation' value={employee.designation || ''} autoComplete='off' placeholder='Designation' />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className='mb-3' controlId='gender'>
-                      <Form.Label>Gender</Form.Label>
-                      <Form.Control type='text' onChange={inputHandler} name='gender' value={employee.gender || ''} autoComplete='off' placeholder='Gender' />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className='mb-3' controlId='course'>
-                      <Form.Label>Course</Form.Label>
-                      <Form.Control type='text' onChange={inputHandler} name='course' value={employee.course || ''} autoComplete='off' placeholder='Course' />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <div className='d-flex justify-content-end'>
-                  <Button variant='primary' type='submit' className='me-2'>Update</Button>
-                  <Button variant='secondary' onClick={() => setIsEditing(false)}>Cancel</Button>
-                </div>
-              </Form>
+             <Form onSubmit={submitForm}>
+             <Row>
+                 <Col md={6}>
+                     <Form.Group className='mb-3' controlId='name'>
+                         <Form.Label>Name</Form.Label>
+                         <Form.Control type='text' onChange={inputHandler} name='name' value={employee.name || ''} autoComplete='off' placeholder='Name' />
+                     </Form.Group>
+                 </Col>
+                 <Col md={6}>
+                     <Form.Group className='mb-3' controlId='email'>
+                         <Form.Label>Email</Form.Label>
+                         <Form.Control type='email' onChange={inputHandler} name='email' value={employee.email || ''} autoComplete='off' placeholder='Email' />
+                     </Form.Group>
+                 </Col>
+             </Row>
+             <Row>
+                 <Col md={6}>
+                     <Form.Group className='mb-3' controlId='mobile'>
+                         <Form.Label>Mobile</Form.Label>
+                         <Form.Control type='text' onChange={inputHandler} name='mobile' value={employee.mobile || ''} autoComplete='off' placeholder='Mobile' />
+                     </Form.Group>
+                 </Col>
+                 <Col md={6}>
+                     <Form.Group className='mb-3' controlId='designation'>
+                         <Form.Label>Designation</Form.Label>
+                         <Form.Control type='text' onChange={inputHandler} name='designation' value={employee.designation || ''} autoComplete='off' placeholder='Designation' />
+                     </Form.Group>
+                 </Col>
+             </Row>
+             <Row>
+                 <Col md={6}>
+                     <Form.Group className='mb-3' controlId='gender'>
+                         <Form.Label>Gender</Form.Label>
+                         <div>
+                             <Form.Check
+                                 inline
+                                 label="Male"
+                                 type="radio"
+                                 name="gender"
+                                 value="Male"
+                                 checked={employee.gender === 'Male'}
+                                 onChange={inputHandler}
+                             />
+                             <Form.Check
+                                 inline
+                                 label="Female"
+                                 type="radio"
+                                 name="gender"
+                                 value="Female"
+                                 checked={employee.gender === 'Female'}
+                                 onChange={inputHandler}
+                             />
+                         </div>
+                     </Form.Group>
+                 </Col>
+                 <Col md={6}>
+                     <Form.Group className='mb-3' controlId='course'>
+                         <Form.Label>Course</Form.Label>
+                         <div>
+                             <Form.Check
+                                 inline
+                                 label="MCA"
+                                 type="checkbox"
+                                 name="course"
+                                 value="MCA"
+                                 checked={employee.course.includes('MCA')}
+                                 onChange={inputHandler}
+                             />
+                             <Form.Check
+                                 inline
+                                 label="BCA"
+                                 type="checkbox"
+                                 name="course"
+                                 value="BCA"
+                                 checked={employee.course.includes('BCA')}
+                                 onChange={inputHandler}
+                             />
+                             <Form.Check
+                                 inline
+                                 label="BSC"
+                                 type="checkbox"
+                                 name="course"
+                                 value="BSC"
+                                 checked={employee.course.includes('BSC')}
+                                 onChange={inputHandler}
+                             />
+                         </div>
+                     </Form.Group>
+                 </Col>
+             </Row>
+             <div className='d-flex justify-content-end'>
+                 <Button variant='primary' type='submit' className='me-2'>Update</Button>
+                 <Button variant='secondary' onClick={() => setIsEditing(false)}>Cancel</Button>
+             </div>
+         </Form>
+         
+         
             ) : (
               <>
                 <ul className='list-group list-group-flush'>
@@ -116,7 +178,7 @@ const Dashboard = ({ user, setUser }) => {
                   <li className='list-group-item'>Mobile: {employee.mobile}</li>
                   <li className='list-group-item'>Designation: {employee.designation}</li>
                   <li className='list-group-item'>Gender: {employee.gender}</li>
-                  <li className='list-group-item'>Course: {employee.course}</li>
+                  <li className='list-group-item'>Course: {employee.course.join(', ')}</li>
                 </ul>
                 <div className='d-flex justify-content-end'>
                   <Button variant='primary' className='mt-3' onClick={() => setIsEditing(true)}>Edit</Button>
