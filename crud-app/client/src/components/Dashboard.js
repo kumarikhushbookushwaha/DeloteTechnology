@@ -18,6 +18,7 @@ const Dashboard = ({ user, setUser }) => {
       navigate('/');
       return;
     }
+   
     const fetchEmployee = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/api/getone/${user._id}`);
@@ -32,6 +33,10 @@ const Dashboard = ({ user, setUser }) => {
       fetchEmployee();
     }
   }, [user, navigate]);
+  
+  if (!employee.course){
+    employee.course = [];
+  }
 
   const inputHandler = (e) => {
     const { name, value, type, checked } = e.target;
@@ -178,11 +183,12 @@ const Dashboard = ({ user, setUser }) => {
                   <li className='list-group-item'>Mobile: {employee.mobile}</li>
                   <li className='list-group-item'>Designation: {employee.designation}</li>
                   <li className='list-group-item'>Gender: {employee.gender}</li>
-                  <li className='list-group-item'>Course: {employee.course.join(', ')}</li>
+                  <li className='list-group-item'>Course: {employee.course.join(', ') || 'no course'}</li>
                 </ul>
                 <div className='d-flex justify-content-end'>
                   <Button variant='primary' className='mt-3' onClick={() => setIsEditing(true)}>Edit</Button>
                 </div>
+               
               </>
             )}
           </Card.Body>

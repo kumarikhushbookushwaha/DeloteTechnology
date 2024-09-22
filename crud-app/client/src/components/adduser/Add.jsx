@@ -46,6 +46,7 @@ const AddEmployee = ({ user, setUser }) => {
             console.log('Submitting form data:', formData); // Log form data
             const response = await axios.post('http://localhost:8000/api/create', formData);
             toast.success(response.data.msg, { position: 'top-right' });
+            navigate(`/employeelist`);
         } catch (error) {
             toast.error('There was an error creating the user!', { position: 'top-right' });
             console.error('There was an error creating the user!', error.response ? error.response.data : error.message);
