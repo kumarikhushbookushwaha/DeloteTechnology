@@ -29,10 +29,6 @@ const userSchema = new mongoose.Schema({
     course:{
         type: [String],
         required: false
-    },
-    image:{
-        type: String,
-        required: false
     }
 })
 
